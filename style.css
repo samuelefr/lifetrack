@@ -1,3 +1,34 @@
+/* ─── SWIPE DELETE ─────────────────────────────────── */
+.act-card {
+  position: relative;
+  overflow: visible;
+}
+.swipe-container {
+  display: flex;
+  width: 100%;
+  transition: transform 0.2s;
+  will-change: transform;
+}
+.btn-swipe-delete {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #e05a5a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 18px;
+  cursor: pointer;
+  opacity: 0.92;
+  z-index: 2;
+  box-shadow: 0 2px 8px #0002;
+  transition: background 0.15s, opacity 0.15s;
+}
+.btn-swipe-delete:active { opacity: 0.7; background: #c0392b; }
 /* ─── BTN DONE ─────────────────────────────────────── */
 .btn-done {
   margin-top: 10px;

@@ -188,19 +188,22 @@ function buildCard(act) {
     : '';
 
   card.innerHTML = `
-    <div class="act-bar" style="background:${act.color}"></div>
-    <div class="act-body">
-      <div class="act-top">
-        <span class="act-name">${act.name || 'attività'}</span>
-        ${typeBadge}
+    <div class="swipe-container">
+      <div class="act-bar" style="background:${act.color}"></div>
+      <div class="act-body">
+        <div class="act-top">
+          <span class="act-name">${act.name || 'attività'}</span>
+          ${typeBadge}
+        </div>
+        <div class="act-meta">
+          ${timeHtml}
+          ${datesHtml}
+        </div>
+        ${noteHtml}
+        <button class="btn-done" type="button">${act.done ? 'Annulla' : 'Fatto'}</button>
       </div>
-      <div class="act-meta">
-        ${timeHtml}
-        ${datesHtml}
-      </div>
-      ${noteHtml}
-      <button class="btn-done" type="button">${act.done ? 'Annulla' : 'Fatto'}</button>
     </div>
+    <button class="btn-swipe-delete" type="button">Elimina</button>
   `;
 
   // Tap → edit (solo se non si clicca il bottone)
@@ -210,6 +213,71 @@ function buildCard(act) {
   card.querySelector('.btn-done').addEventListener('click', (e) => {
     e.stopPropagation();
     toggleDone(act.id);
+  });
+
+  // Swipe logic
+  let startX = null, currentX = null, swiped = false;
+  const swipeContainer = card.querySelector('.swipe-container');
+  const deleteBtn = card.querySelector('.btn-swipe-delete');
+
+  function setSwipe(x) {
+    swipeContainer.style.transform = `translateX(${x}px)`;
+    if (x < -80) {
+      swiped = true;
+      swipeContainer.style.transition = 'transform 0.2s';
+      swipeContainer.style.transform = 'translateX(-80px)';
+    } else if (x > -10) {
+      swiped = false;
+      swipeContainer.style.transition = 'transform 0.2s';
+      swipeContainer.style.transform = 'translateX(0)';
+    }
+  }
+
+  // Touch events
+  swipeContainer.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    swipeContainer.style.transition = '';
+  });
+  swipeContainer.addEventListener('touchmove', e => {
+    if (startX === null) return;
+    currentX = e.touches[0].clientX;
+    let dx = currentX - startX;
+    if (dx < 0 && dx > -100) setSwipe(dx);
+  });
+  swipeContainer.addEventListener('touchend', e => {
+    if (startX === null) return;
+    let dx = (currentX || startX) - startX;
+    setSwipe(dx < -40 ? -80 : 0);
+    startX = null; currentX = null;
+  });
+
+  // Mouse events (desktop)
+  swipeContainer.addEventListener('mousedown', e => {
+    startX = e.clientX;
+    swipeContainer.style.transition = '';
+    document.body.style.userSelect = 'none';
+  });
+  window.addEventListener('mousemove', e => {
+    if (startX === null) return;
+    currentX = e.clientX;
+    let dx = currentX - startX;
+    if (dx < 0 && dx > -100) setSwipe(dx);
+  });
+  window.addEventListener('mouseup', e => {
+    if (startX === null) return;
+    let dx = (currentX || startX) - startX;
+    setSwipe(dx < -40 ? -80 : 0);
+    startX = null; currentX = null;
+    document.body.style.userSelect = '';
+  });
+
+  // Delete button
+  deleteBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    activities = activities.filter(a => a.id !== act.id);
+    save();
+    buildDateNav();
+    renderTimeline();
   });
 
   return card;
