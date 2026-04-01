@@ -226,10 +226,12 @@ function buildCard(act) {
       swiped = true;
       swipeContainer.style.transition = 'transform 0.2s';
       swipeContainer.style.transform = 'translateX(-80px)';
+      card.classList.add('swiped');
     } else if (x > -10) {
       swiped = false;
       swipeContainer.style.transition = 'transform 0.2s';
       swipeContainer.style.transform = 'translateX(0)';
+      card.classList.remove('swiped');
     }
   }
 
