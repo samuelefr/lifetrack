@@ -199,19 +199,18 @@ function buildCard(act) {
         ${datesHtml}
       </div>
       ${noteHtml}
+      <button class="btn-done" type="button">${act.done ? 'Annulla' : 'Fatto'}</button>
     </div>
   `;
 
-  // Tap → edit
-  card.addEventListener('click', () => openModal(act.id));
+  // Tap → edit (solo se non si clicca il bottone)
+  card.querySelector('.act-name').addEventListener('click', () => openModal(act.id));
 
-  // Long press → toggle done
-  let pressTimer;
-  card.addEventListener('touchstart', () => {
-    pressTimer = setTimeout(() => toggleDone(act.id), 600);
+  // Bottone fatto/annulla
+  card.querySelector('.btn-done').addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleDone(act.id);
   });
-  card.addEventListener('touchend', () => clearTimeout(pressTimer));
-  card.addEventListener('touchmove', () => clearTimeout(pressTimer));
 
   return card;
 }
