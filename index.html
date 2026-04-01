@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>LifeTrack</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <span class="logo">lifetrack</span>
+      <span class="tagline" id="todayLabel"></span>
+    </div>
+    <button class="btn-add" id="btnAdd" aria-label="Aggiungi attività">+</button>
+  </header>
+
+  <!-- NAV DATE STRIP -->
+  <nav class="date-nav" id="dateNav"></nav>
+
+  <!-- TIMELINE VIEW -->
+  <main class="timeline" id="timeline">
+    <div class="empty-state" id="emptyState">
+      <span class="empty-icon">◎</span>
+      <p>nessuna attività<br/>per oggi</p>
+    </div>
+  </main>
+
+  <!-- MODAL OVERLAY -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="modalTitle">nuova attività</span>
+        <button class="modal-close" id="modalClose">×</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Nome attività -->
+        <div class="field">
+          <label class="label">nome</label>
+          <input class="input" type="text" id="actName" placeholder="es. palestra, riunione…" maxlength="40" />
+        </div>
+
+        <!-- Tipologia + Colore -->
+        <div class="field">
+          <label class="label">tipologia</label>
+          <div class="type-row">
+            <input class="input type-input" type="text" id="actType" placeholder="es. lavoro, salute…" maxlength="20" />
+            <div class="color-swatches" id="colorSwatches"></div>
+          </div>
+        </div>
+
+        <!-- Data inizio -->
+        <div class="field field-row">
+          <div class="field-half">
+            <label class="label">dal</label>
+            <input class="input" type="date" id="actDateStart" />
+          </div>
+          <div class="field-half">
+            <label class="label">al</label>
+            <input class="input" type="date" id="actDateEnd" />
+          </div>
+        </div>
+
+        <!-- Orario -->
+        <div class="field field-row">
+          <div class="field-half">
+            <label class="label">ora inizio</label>
+            <input class="input" type="time" id="actTimeStart" />
+          </div>
+          <div class="field-half">
+            <label class="label">ora fine</label>
+            <input class="input" type="time" id="actTimeEnd" />
+          </div>
+        </div>
+
+        <!-- Note -->
+        <div class="field">
+          <label class="label">note</label>
+          <textarea class="input textarea" id="actNote" placeholder="dettagli opzionali…" rows="2" maxlength="200"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-delete hidden" id="btnDelete">elimina</button>
+        <button class="btn-save" id="btnSave">salva</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
